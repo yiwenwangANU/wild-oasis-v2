@@ -1,15 +1,14 @@
 import styled from "styled-components";
 
 const Table = styled.div`
-  border: 1px solid var(--color-grey-200);
-
   font-size: 1.4rem;
-  background-color: var(--color-grey-0);
   border-radius: 7px;
   overflow: hidden;
 `;
 
 const TableHeader = styled.header`
+  border: 1px solid var(--color-grey-200);
+  border-radius: 7px;
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
   column-gap: 2.4rem;
@@ -23,3 +22,21 @@ const TableHeader = styled.header`
   color: var(--color-grey-600);
   padding: 1.6rem 2.4rem;
 `;
+
+function CabinTable({ children }) {
+  return (
+    <Table>
+      <TableHeader>
+        <div></div>
+        <div>CABIN</div>
+        <div>CAPACITY</div>
+        <div>PRICE</div>
+        <div>DISCOUNT</div>
+        <div></div>
+      </TableHeader>
+      {children}
+    </Table>
+  );
+}
+
+export default CabinTable;

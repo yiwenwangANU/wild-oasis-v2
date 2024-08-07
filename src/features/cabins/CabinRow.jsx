@@ -6,10 +6,8 @@ const TableRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
+  background-color: var(--color-grey-0);
+  border-bottom: 1px solid var(--color-grey-100);
 `;
 
 const Img = styled.img`
@@ -38,3 +36,27 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+
+const parsePrice = (price) => {
+  return `$${parseFloat(price).toFixed(2)}`;
+};
+
+const parseDiscount = (discount) => {
+  if (+discount > 0) {
+    return parsePrice(discount);
+  } else return "--";
+};
+function CabinRow({ cabin }) {
+  const { name, image, discount, maxCapacity, regularPrice } = cabin;
+  return (
+    <TableRow>
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {maxCapacity} guests</div>
+      <Price>{parsePrice(regularPrice)}</Price>
+      <Discount>{parseDiscount(discount)}</Discount>
+    </TableRow>
+  );
+}
+
+export default CabinRow;
