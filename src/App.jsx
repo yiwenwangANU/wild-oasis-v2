@@ -18,6 +18,7 @@ import AppLayout from "./ui/AppLayout";
 
 // Import global styles
 import GlobalStyles from "./styles/GlobalStyles";
+import { Toaster } from "react-hot-toast";
 
 // Create a react query client
 const queryClient = new QueryClient();
@@ -72,6 +73,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
+      <Toaster />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
