@@ -1,4 +1,10 @@
 import styled from "styled-components";
+import CabinRows from "./CabinRows";
+import Row from "../../ui/Row";
+import Spinner from "../../ui/Spinner";
+import { getCabins } from "../../services/apiCabins";
+import { useQuery } from "@tanstack/react-query";
+import CabinRow from "./CabinRow";
 
 const Table = styled.div`
   font-size: 1.4rem;
@@ -23,7 +29,17 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-function CabinTable({ children }) {
+function CabinTable() {
+  const {
+    data: cabins,
+    isPending,
+    // error,
+  } = useQuery({
+    queryKey: ["getCabins"],
+    queryFn: getCabins,
+  });
+  if (isPending) return <Spinner />;
+
   return (
     <Table>
       <TableHeader>
@@ -34,7 +50,13 @@ function CabinTable({ children }) {
         <div>DISCOUNT</div>
         <div></div>
       </TableHeader>
-      {children}
+      <CabinRows>
+        {cabins.map((cabin) => (
+          <Row key={cabin.id}>
+            <CabinRow key={cabin.id} cabin={cabin} />
+          </Row>
+        ))}
+      </CabinRows>
     </Table>
   );
 }

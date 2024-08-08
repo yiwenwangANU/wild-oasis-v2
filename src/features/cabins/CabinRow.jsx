@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import Button from "../../ui/Button";
+import { useMutation } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCabins";
+import useDeleteCabin from "./useDeleteCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -47,7 +51,16 @@ const parseDiscount = (discount) => {
   } else return "--";
 };
 function CabinRow({ cabin }) {
-  const { name, image, discount, maxCapacity, regularPrice } = cabin;
+  const {
+    id: cabinId,
+    name,
+    image,
+    discount,
+    maxCapacity,
+    regularPrice,
+  } = cabin;
+  const { isDeleting, deleteCabin } = useDeleteCabin();
+
   return (
     <TableRow>
       <Img src={image} />
@@ -55,6 +68,7 @@ function CabinRow({ cabin }) {
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{parsePrice(regularPrice)}</Price>
       <Discount>{parseDiscount(discount)}</Discount>
+      <Button onClick={() => deleteCabin(cabinId)}>Delete</Button>
     </TableRow>
   );
 }
