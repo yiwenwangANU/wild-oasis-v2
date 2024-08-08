@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
-import { useMutation } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
 import useDeleteCabin from "./useDeleteCabin";
 
 const TableRow = styled.div`
@@ -68,7 +66,9 @@ function CabinRow({ cabin }) {
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{parsePrice(regularPrice)}</Price>
       <Discount>{parseDiscount(discount)}</Discount>
-      <Button onClick={() => deleteCabin(cabinId)}>Delete</Button>
+      <Button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
+        Delete
+      </Button>
     </TableRow>
   );
 }
