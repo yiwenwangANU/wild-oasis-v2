@@ -5,6 +5,7 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
+import { useForm } from "react-hook-form";
 
 const FormRow = styled.div`
   display: grid;
@@ -43,31 +44,60 @@ const Error = styled.span`
 `;
 
 function CreateCabinForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" />
+        <Input
+          type="text"
+          id="name"
+          {...register("name", { required: true, minLength: 3 })}
+        />
+        {errors.exampleRequired && <span>This field is required</span>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" />
+        <Input
+          type="number"
+          id="maxCapacity"
+          {...register("maxCapacity", { required: true, min: 1, max: 99 })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" />
+        <Input
+          type="number"
+          id="regularPrice"
+          {...register("regularPrice", { required: true, min: 1 })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="discount">Discount</Label>
-        <Input type="number" id="discount" defaultValue={0} />
+        <Input
+          type="number"
+          id="discount"
+          defaultValue={0}
+          {...register("discount", { required: true })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" defaultValue="" />
+        <Textarea
+          type="number"
+          id="description"
+          defaultValue=""
+          {...register("description", { required: true })}
+        />
       </FormRow>
 
       <FormRow>
