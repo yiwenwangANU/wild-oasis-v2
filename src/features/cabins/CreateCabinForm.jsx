@@ -7,6 +7,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import useCreateCabin from "./useCreateCabin";
+import { useEffect } from "react";
 
 const FormRow = styled.div`
   display: grid;
@@ -50,9 +51,16 @@ function CreateCabinForm() {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
-  const { isCreating, createCabin } = useCreateCabin();
+  const { isCreating, createCabin, isSuccess } = useCreateCabin();
   const onSubmit = (data) => createCabin(data);
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+    }
+  }, [isSuccess, reset]);
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow>

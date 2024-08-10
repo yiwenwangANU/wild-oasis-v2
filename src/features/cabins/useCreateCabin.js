@@ -4,7 +4,11 @@ import toast from "react-hot-toast";
 
 function useCreateCabin() {
   const queryClient = useQueryClient();
-  const { mutate: createCabin, isPending: isCreating } = useMutation({
+  const {
+    mutate: createCabin,
+    isPending: isCreating,
+    isSuccess,
+  } = useMutation({
     mutationFn: createCabinAPI,
     onSuccess: () => {
       // Invalidate and refetch
@@ -16,7 +20,7 @@ function useCreateCabin() {
     },
   });
 
-  return { createCabin, isCreating };
+  return { createCabin, isCreating, isSuccess };
 }
 
 export default useCreateCabin;
