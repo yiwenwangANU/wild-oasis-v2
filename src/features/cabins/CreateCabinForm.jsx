@@ -6,6 +6,7 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
+import useCreateCabin from "./useCreateCabin";
 
 const FormRow = styled.div`
   display: grid;
@@ -48,8 +49,10 @@ function CreateCabinForm() {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { isCreating, createCabin } = useCreateCabin();
+  const onSubmit = (data) => createCabin(data);
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow>
@@ -57,9 +60,17 @@ function CreateCabinForm() {
         <Input
           type="text"
           id="name"
-          {...register("name", { required: true, minLength: 3 })}
+          {...register("name", {
+            required: true,
+            minLength: 3,
+          })}
         />
-        {errors.exampleRequired && <span>This field is required</span>}
+        {errors.name && errors.name.type === "required" && (
+          <Error>This field is required</Error>
+        )}
+        {errors.name && errors.name.type === "minLength" && (
+          <Error>Cabin name must be at least 3 characters long.</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -67,8 +78,17 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="maxCapacity"
-          {...register("maxCapacity", { required: true, min: 1, max: 99 })}
+          {...register("maxCapacity", {
+            required: true,
+            min: 1,
+          })}
         />
+        {errors.maxCapacity && errors.maxCapacity.type === "required" && (
+          <Error>This field is required</Error>
+        )}
+        {errors.maxCapacity && errors.maxCapacity.type === "min" && (
+          <Error>Max Capacity must be larger than 0.</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -76,8 +96,17 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="regularPrice"
-          {...register("regularPrice", { required: true, min: 1 })}
+          {...register("regularPrice", {
+            required: true,
+            min: 1,
+          })}
         />
+        {errors.regularPrice && errors.regularPrice.type === "required" && (
+          <Error>This field is required</Error>
+        )}
+        {errors.regularPrice && errors.regularPrice.type === "min" && (
+          <Error>Cabin price must be larger than 0.</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -86,8 +115,17 @@ function CreateCabinForm() {
           type="number"
           id="discount"
           defaultValue={0}
-          {...register("discount", { required: true })}
+          {...register("discount", {
+            required: true,
+            validate: (value) => +value < +getValues("regularPrice"),
+          })}
         />
+        {errors.discount && errors.discount.type === "required" && (
+          <Error>This field is required</Error>
+        )}
+        {errors.discount && errors.discount.type === "validate" && (
+          <Error>Discount must be smaller than price.</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -98,6 +136,9 @@ function CreateCabinForm() {
           defaultValue=""
           {...register("description", { required: true })}
         />
+        {errors.description && errors.description.type === "required" && (
+          <Error>This field is required</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -107,10 +148,12 @@ function CreateCabinForm() {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" disabled={isCreating}>
           Cancel
         </Button>
-        <Button>Edit cabin</Button>
+        <Button type="submit" disabled={isCreating}>
+          Add cabin
+        </Button>
       </FormRow>
     </Form>
   );

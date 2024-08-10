@@ -17,3 +17,23 @@ export async function deleteCabin(cabinId) {
     throw new Error("Cabin could not be deleted!");
   }
 }
+
+export async function createCabin(newCabin) {
+  const { name, maxCapacity, regularPrice, discount, description } = newCabin;
+  const { error } = await supabase
+    .from("cabins")
+    .insert([
+      {
+        name: name,
+        maxCapacity: maxCapacity,
+        regularPrice: regularPrice,
+        discount: discount,
+        description: description,
+      },
+    ])
+    .select();
+  if (error) {
+    console.error(error);
+    throw new Error("Cabin could not be created!");
+  }
+}
