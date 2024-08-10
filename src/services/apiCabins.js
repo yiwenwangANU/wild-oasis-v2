@@ -1,5 +1,6 @@
 import supabase from "../supabase";
-
+const BUCKET_URL =
+  "https://kyjkvmtqkfvbenttjrma.supabase.co/storage/v1/object/public/cabin-images/";
 export async function getCabins() {
   let { data: cabins, error } = await supabase.from("cabins").select("*");
   if (error) {
@@ -19,8 +20,14 @@ export async function deleteCabin(cabinId) {
 }
 
 export async function createCabin(newCabin) {
+  // Create unique image name and url for uploaded image
+  const image = newCabin.image[0];
+  const imageName = `${Math.random()}_${image.name}`;
+  const imageUrl = `${BUCKET_URL}${imageName}`;
+  console.log(imageUrl);
+
   const { name, maxCapacity, regularPrice, discount, description } = newCabin;
-  const { error } = await supabase
+  const { error, data } = await supabase
     .from("cabins")
     .insert([
       {
@@ -29,11 +36,27 @@ export async function createCabin(newCabin) {
         regularPrice: regularPrice,
         discount: discount,
         description: description,
+        image: imageUrl,
       },
     ])
     .select();
   if (error) {
     console.error(error);
     throw new Error("Cabin could not be created!");
+  }
+
+  // upload image
+  const { error: storageError } = await supabase.storage
+    .from("cabin-images")
+    .upload(imageName, image, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+  if (storageError) {
+    console.error(storageError);
+
+    await supabase.from("cabins").delete().eq("id", data[0].id);
+
+    throw new Error("Cabin image could not be uploaded!");
   }
 }
