@@ -8,6 +8,7 @@ import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import useCreateCabin from "./useCreateCabin";
 import { useEffect } from "react";
+import useEditCabin from "./useEditCabin";
 
 const FormRow = styled.div`
   display: grid;
@@ -45,21 +46,34 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm() {
+function CreateCabinForm({ cabinToEdit = {}, handleCloseForm }) {
+  const toCreateCabin = Object.keys(cabinToEdit).length === 0;
+  const { id, ...editData } = cabinToEdit;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
     reset,
-  } = useForm();
-  const { isCreating, createCabin, isSuccess } = useCreateCabin();
-  const onSubmit = (data) => createCabin(data);
-  useEffect(() => {
-    if (isSuccess) {
-      reset();
+  } = useForm({ defaultValues: editData });
+
+  const { isCreating, createCabin, createIsSuccess } = useCreateCabin();
+  const { isEditting, editCabin, editIsSuccess } = useEditCabin();
+
+  const onSubmit = (data) => {
+    if (toCreateCabin) createCabin(data);
+    else {
+      editCabin({ id, data });
     }
-  }, [isSuccess, reset]);
+  };
+
+  useEffect(() => {
+    if (createIsSuccess || editIsSuccess) {
+      reset();
+      handleCloseForm();
+    }
+  }, [createIsSuccess, editIsSuccess, reset, handleCloseForm]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -68,6 +82,7 @@ function CreateCabinForm() {
         <Input
           type="text"
           id="name"
+          disabled={isCreating || isEditting}
           {...register("name", {
             required: true,
             minLength: 3,
@@ -86,6 +101,7 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="maxCapacity"
+          disabled={isCreating || isEditting}
           {...register("maxCapacity", {
             required: true,
             min: 1,
@@ -104,6 +120,7 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="regularPrice"
+          disabled={isCreating || isEditting}
           {...register("regularPrice", {
             required: true,
             min: 1,
@@ -122,7 +139,7 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="discount"
-          defaultValue={0}
+          disabled={isCreating || isEditting}
           {...register("discount", {
             required: true,
             validate: (value) => +value < +getValues("regularPrice"),
@@ -141,7 +158,7 @@ function CreateCabinForm() {
         <Textarea
           type="number"
           id="description"
-          defaultValue=""
+          disabled={isCreating || isEditting}
           {...register("description", { required: true })}
         />
         {errors.description && errors.description.type === "required" && (
@@ -155,20 +172,29 @@ function CreateCabinForm() {
           id="image"
           accept="image/*"
           type="file"
-          {...register("image", { required: true })}
+          disabled={isCreating || isEditting}
+          {...register("image", { required: toCreateCabin })}
         />
-        {errors.image && errors.image.type === "required" && (
+        {toCreateCabin && errors.image && errors.image.type === "required" && (
           <Error>Cabin image is required</Error>
         )}
       </FormRow>
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" disabled={isCreating}>
+        <Button
+          variation="secondary"
+          type="reset"
+          disabled={isCreating || isEditting}
+          onClick={() => {
+            reset();
+            handleCloseForm();
+          }}
+        >
           Cancel
         </Button>
-        <Button type="submit" disabled={isCreating}>
-          Add cabin
+        <Button type="submit" disabled={isCreating || isEditting}>
+          {toCreateCabin ? `Add Cabin` : "Update Cabin"}
         </Button>
       </FormRow>
     </Form>

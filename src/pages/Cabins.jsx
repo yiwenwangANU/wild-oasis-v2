@@ -6,6 +6,14 @@ import { useState } from "react";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
 function Cabins() {
   const [showCabinForm, setShowCabinForm] = useState(false);
+
+  function handleShowForm() {
+    setShowCabinForm(true);
+  }
+
+  function handleCloseForm() {
+    setShowCabinForm(false);
+  }
   return (
     <>
       <MainHeader>
@@ -14,11 +22,9 @@ function Cabins() {
       </MainHeader>
       <CabinTable />
       <div>
-        <Button onClick={() => setShowCabinForm(!showCabinForm)}>
-          Add New Cabin
-        </Button>
+        <Button onClick={() => handleShowForm()}>Add New Cabin</Button>
       </div>
-      {showCabinForm && <CreateCabinForm />}
+      {showCabinForm && <CreateCabinForm handleCloseForm={handleCloseForm} />}
     </>
   );
 }

@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import Button from "../../ui/Button";
 import useDeleteCabin from "./useDeleteCabin";
+import CreateCabinForm from "./CreateCabinForm";
+import { useState } from "react";
 
 const TableRow = styled.div`
   display: grid;
@@ -58,18 +59,35 @@ function CabinRow({ cabin }) {
     regularPrice,
   } = cabin;
   const { isDeleting, deleteCabin } = useDeleteCabin();
-
+  const [showCabinForm, setShowCabinForm] = useState(false);
   return (
-    <TableRow>
-      <Img src={image} />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
-      <Price>{parsePrice(regularPrice)}</Price>
-      <Discount>{parseDiscount(discount)}</Discount>
-      <Button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
-        Delete
-      </Button>
-    </TableRow>
+    <>
+      <TableRow>
+        <Img src={image} />
+        <Cabin>{name}</Cabin>
+        <div>Fits up to {maxCapacity} guests</div>
+        <Price>{parsePrice(regularPrice)}</Price>
+        <Discount>{parseDiscount(discount)}</Discount>
+        <div>
+          <button
+            onClick={() => {
+              setShowCabinForm(true);
+            }}
+          >
+            Edit
+          </button>
+          <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
+            Delete
+          </button>
+        </div>
+      </TableRow>
+      {showCabinForm && (
+        <CreateCabinForm
+          cabinToEdit={cabin}
+          handleCloseForm={() => setShowCabinForm(false)}
+        />
+      )}
+    </>
   );
 }
 
