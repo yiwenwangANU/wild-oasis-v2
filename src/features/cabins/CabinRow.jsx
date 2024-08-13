@@ -2,6 +2,7 @@ import styled from "styled-components";
 import useDeleteCabin from "./useDeleteCabin";
 import CreateCabinForm from "./CreateCabinForm";
 import { useState } from "react";
+import useDuplicateCabin from "./useDuplicateCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -59,6 +60,7 @@ function CabinRow({ cabin }) {
     regularPrice,
   } = cabin;
   const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isDuplicating, duplicateCabin } = useDuplicateCabin();
   const [showCabinForm, setShowCabinForm] = useState(false);
   return (
     <>
@@ -70,13 +72,21 @@ function CabinRow({ cabin }) {
         <Discount>{parseDiscount(discount)}</Discount>
         <div>
           <button
-            onClick={() => {
-              setShowCabinForm(true);
-            }}
+            onClick={() => duplicateCabin(cabin)}
+            disabled={isDeleting || isDuplicating}
+          >
+            Duplicate
+          </button>
+          <button
+            onClick={() => setShowCabinForm(true)}
+            disabled={isDeleting || isDuplicating}
           >
             Edit
           </button>
-          <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
+          <button
+            onClick={() => deleteCabin(cabinId)}
+            disabled={isDeleting || isDuplicating}
+          >
             Delete
           </button>
         </div>

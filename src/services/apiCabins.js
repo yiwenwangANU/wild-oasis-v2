@@ -19,6 +19,27 @@ export async function deleteCabin(cabinId) {
   }
 }
 
+export async function duplicateCabin(cabin) {
+  const { name, image, discount, maxCapacity, regularPrice, description } =
+    cabin;
+  const { error } = await supabase
+    .from("cabins")
+    .insert([
+      {
+        name: name,
+        maxCapacity: maxCapacity,
+        regularPrice: regularPrice,
+        discount: discount,
+        description: description,
+        image: image,
+      },
+    ])
+    .select();
+  if (error) {
+    console.error(error);
+    throw new Error("Cabin could not be created!");
+  }
+}
 export async function createCabin(newCabin) {
   // Create unique image name and url for uploaded image
   const image = newCabin.image[0];
