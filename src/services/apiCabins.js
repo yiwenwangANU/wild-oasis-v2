@@ -26,7 +26,7 @@ export async function duplicateCabin(cabin) {
     .from("cabins")
     .insert([
       {
-        name: name,
+        name: `copy of ${name}`,
         maxCapacity: maxCapacity,
         regularPrice: regularPrice,
         discount: discount,
