@@ -81,8 +81,8 @@ export async function createCabin(newCabin) {
 
 export async function editCabin(data) {
   const { id, data: cabinData } = data;
-  const hasImg = !cabinData?.image === undefined;
-  if (!hasImg) {
+  const hasImg = cabinData.image instanceof FileList;
+  if (hasImg) {
     const image = cabinData.image[0];
     const imageName = `${Math.random()}_${image.name}`;
     const imageUrl = `${BUCKET_URL}${imageName}`;

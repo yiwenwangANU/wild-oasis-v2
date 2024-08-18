@@ -6,11 +6,17 @@ import Button from "../../ui/Button";
 import useGetSettings from "./useGetSettings";
 import Spinner from "../../ui/Spinner";
 import { useEffect } from "react";
+import styled from "styled-components";
+import useUpdateSettings from "./useUpdateSettings";
+
+const Error = styled.span`
+  font-size: 1.4rem;
+  color: var(--color-red-700);
+`;
 
 function UpdateSettingsForm() {
-  const { data: settings, isPending } = useGetSettings();
-
-  console.log(settings);
+  const { settings, isPending } = useGetSettings();
+  const { updateSettings, isUpdating } = useUpdateSettings();
   const {
     register,
     handleSubmit,
@@ -24,7 +30,7 @@ function UpdateSettingsForm() {
     }
   }, [settings, reset]);
 
-  const onSubmit = (updatedSettings) => console.log(updatedSettings);
+  const onSubmit = (updatedSettings) => updateSettings(updatedSettings);
   if (isPending) return <Spinner />;
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -32,32 +38,36 @@ function UpdateSettingsForm() {
         <Input
           type="number"
           id="min-nights"
-          {...register("minBookingLength")}
+          {...register("minBookingLength", { required: true })}
         />
+        {errors.minBookingLength && <Error>This field is required</Error>}
       </FormRow>
       <FormRow label="Maximum nights/booking">
         <Input
           type="number"
           id="max-nights"
-          {...register("maxBookingLength")}
+          {...register("maxBookingLength", { required: true })}
         />
+        {errors.maxBookingLength && <Error>This field is required</Error>}
       </FormRow>
       <FormRow label="Maximum guests/booking">
         <Input
           type="number"
           id="max-guests"
-          {...register("maxGuestsPerBooking")}
+          {...register("maxGuestsPerBooking", { required: true })}
         />
+        {errors.maxGuestsPerBooking && <Error>This field is required</Error>}
       </FormRow>
       <FormRow label="Breakfast price">
         <Input
           type="number"
           id="breakfast-price"
-          {...register("breakfastPrice")}
+          {...register("breakfastPrice", { required: true })}
         />
+        {errors.breakfastPrice && <Error>This field is required</Error>}
       </FormRow>
       <FormRow>
-        <Button>Update Settings</Button>
+        <Button disabled={isUpdating}>Update Settings</Button>
       </FormRow>
     </Form>
   );

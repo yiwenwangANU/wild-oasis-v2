@@ -1,3 +1,5 @@
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { IoMdClose } from "react-icons/io";
 import styled from "styled-components";
 
 const StyledModal = styled.div`
@@ -24,7 +26,7 @@ const Overlay = styled.div`
   transition: all 0.5s;
 `;
 
-const Button = styled.button`
+const CloseButton = styled.button`
   background: none;
   border: none;
   padding: 0.4rem;
@@ -48,3 +50,59 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+const modalContext = createContext();
+function Modal({ children }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
+
+  return (
+    <modalContext.Provider
+      value={{ handleCloseModal, handleOpenModal, isOpen }}
+    >
+      {children}
+    </modalContext.Provider>
+  );
+}
+
+const Open = ({ children }) => {
+  const { handleOpenModal } = useContext(modalContext);
+  return <div onClick={() => handleOpenModal()}>{children}</div>;
+};
+
+const Window = ({ children }) => {
+  const { handleCloseModal, isOpen } = useContext(modalContext);
+  const modalRef = useRef();
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target))
+        handleCloseModal();
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [handleCloseModal]);
+
+  if (!isOpen) return null;
+  else
+    return (
+      <Overlay>
+        <StyledModal ref={modalRef}>
+          <CloseButton onClick={() => handleCloseModal()}>
+            <IoMdClose />
+          </CloseButton>
+          {children}
+        </StyledModal>
+      </Overlay>
+    );
+};
+
+Modal.Open = Open;
+Modal.Window = Window;
+
+export default Modal;
+export { modalContext };

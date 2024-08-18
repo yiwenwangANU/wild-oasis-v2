@@ -7,8 +7,9 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import useCreateCabin from "./useCreateCabin";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import useEditCabin from "./useEditCabin";
+import { modalContext } from "../../ui/Modal";
 
 const FormRow = styled.div`
   display: grid;
@@ -46,7 +47,8 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({ cabinToEdit = {}, handleCloseForm }) {
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { handleCloseModal } = useContext(modalContext);
   const toCreateCabin = Object.keys(cabinToEdit).length === 0;
   const { id, ...editData } = cabinToEdit;
 
@@ -71,9 +73,9 @@ function CreateCabinForm({ cabinToEdit = {}, handleCloseForm }) {
   useEffect(() => {
     if (createIsSuccess || editIsSuccess) {
       reset();
-      handleCloseForm();
+      handleCloseModal();
     }
-  }, [createIsSuccess, editIsSuccess, reset, handleCloseForm]);
+  }, [createIsSuccess, editIsSuccess, reset, handleCloseModal]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -188,7 +190,7 @@ function CreateCabinForm({ cabinToEdit = {}, handleCloseForm }) {
           disabled={isCreating || isEditting}
           onClick={() => {
             reset();
-            handleCloseForm();
+            handleCloseModal();
           }}
         >
           Cancel
