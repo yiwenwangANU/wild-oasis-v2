@@ -4,10 +4,10 @@ import Button from "../../ui/Button";
 function AddCabin() {
   return (
     <Modal>
-      <Modal.Open>
+      <Modal.Open name="newCabin">
         <Button>Add New Cabin</Button>
       </Modal.Open>
-      <Modal.Window>
+      <Modal.Window name="newCabin">
         <CreateCabinForm />
       </Modal.Window>
     </Modal>

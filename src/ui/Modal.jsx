@@ -52,30 +52,31 @@ const CloseButton = styled.button`
 `;
 const modalContext = createContext();
 function Modal({ children }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [openName, setOpenName] = useState("");
   const handleCloseModal = () => {
-    setIsOpen(false);
+    setOpenName("");
   };
-  const handleOpenModal = () => {
-    setIsOpen(true);
+  const handleOpenModal = (name) => {
+    setOpenName(name);
   };
 
   return (
     <modalContext.Provider
-      value={{ handleCloseModal, handleOpenModal, isOpen }}
+      value={{ handleCloseModal, handleOpenModal, openName }}
     >
       {children}
     </modalContext.Provider>
   );
 }
 
-const Open = ({ children }) => {
+const Open = ({ children, name }) => {
   const { handleOpenModal } = useContext(modalContext);
-  return <div onClick={() => handleOpenModal()}>{children}</div>;
+
+  return <div onClick={() => handleOpenModal(name)}>{children}</div>;
 };
 
-const Window = ({ children }) => {
-  const { handleCloseModal, isOpen } = useContext(modalContext);
+const Window = ({ children, name }) => {
+  const { handleCloseModal, openName } = useContext(modalContext);
   const modalRef = useRef();
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const Window = ({ children }) => {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [handleCloseModal]);
 
-  if (!isOpen) return null;
+  if (name !== openName) return null;
   else
     return (
       <Overlay>

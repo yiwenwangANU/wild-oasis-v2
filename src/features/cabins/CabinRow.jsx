@@ -5,7 +5,7 @@ import useDuplicateCabin from "./useDuplicateCabin";
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { HiSquare2Stack } from "react-icons/hi2";
 import Modal from "../../ui/Modal";
-
+import ConfirmDelete from "../../ui/ConfirmDelete";
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -80,22 +80,28 @@ function CabinRow({ cabin }) {
           >
             <HiSquare2Stack />
           </button>
-          <Modal.Open>
+          <Modal.Open name="editCabin">
             <button disabled={isDeleting || isDuplicating}>
               <HiPencil />
             </button>
           </Modal.Open>
-          <button
-            onClick={() => deleteCabin(cabinId)}
-            disabled={isDeleting || isDuplicating}
-          >
-            <HiTrash />
-          </button>
+          <Modal.Open name="deleteCabin">
+            <button>
+              <HiTrash />
+            </button>
+          </Modal.Open>
         </div>
       </TableRow>
 
-      <Modal.Window>
+      <Modal.Window name="editCabin">
         <CreateCabinForm cabinToEdit={cabin} />
+      </Modal.Window>
+      <Modal.Window name="deleteCabin">
+        <ConfirmDelete
+          resourceName={name}
+          onConfirm={() => deleteCabin(cabinId)}
+          disabled={isDeleting || isDuplicating}
+        />
       </Modal.Window>
     </Modal>
   );
