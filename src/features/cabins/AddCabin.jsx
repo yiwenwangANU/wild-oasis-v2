@@ -4,7 +4,7 @@ import Button from "../../ui/Button";
 function AddCabin() {
   return (
     <Modal>
-      <Modal.Open name="newCabin">
+      <Modal.Open name="newCabin" line={false}>
         <Button>Add New Cabin</Button>
       </Modal.Open>
       <Modal.Window name="newCabin">
@@ -12,28 +12,6 @@ function AddCabin() {
       </Modal.Window>
     </Modal>
   );
-  //   const [showModal, setShowModal] = useState(false);
-
-  //   function handleShowModal() {
-  //     setShowModal(true);
-  //   }
-
-  //   function handleCloseModal() {
-  //     setShowModal(false);
-  //   }
-  //   return (
-  //     <>
-  //       <div>
-  //         <Button onClick={() => handleShowModal()}>Add New Cabin</Button>
-  //       </div>
-
-  //       {showModal && (
-  //         <Modal handleCloseModal={handleCloseModal}>
-  //           <CreateCabinForm handleCloseModal={handleCloseModal} />
-  //         </Modal>
-  //       )}
-  //     </>
-  //   );
 }
 
 export default AddCabin;

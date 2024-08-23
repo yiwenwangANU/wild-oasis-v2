@@ -13,3 +13,13 @@ const StyledSelect = styled.select`
   font-weight: 500;
   box-shadow: var(--shadow-sm);
 `;
+
+function Select({ children, onChange, value }) {
+  return (
+    <StyledSelect onChange={onChange} value={value}>
+      {children}
+    </StyledSelect>
+  );
+}
+
+export default Select;

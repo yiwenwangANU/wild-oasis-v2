@@ -1,53 +1,51 @@
-import styled from "styled-components";
-import CabinRows from "./CabinRows";
-import Row from "../../ui/Row";
 import Spinner from "../../ui/Spinner";
-import CabinRow from "./CabinRow";
 import useGetCabins from "./useGetCabins";
-
-const Table = styled.div`
-  font-size: 1.4rem;
-  border-radius: 7px;
-  overflow: hidden;
-`;
-
-const TableHeader = styled.header`
-  border: 1px solid var(--color-grey-200);
-  border-radius: 7px;
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-
-  background-color: var(--color-grey-50);
-  border-bottom: 1px solid var(--color-grey-100);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  color: var(--color-grey-600);
-  padding: 1.6rem 2.4rem;
-`;
+import Table from "../../ui/Table";
+import CabinRow from "./CabinRow";
+import { useSearchParams } from "react-router-dom";
 
 function CabinTable() {
   const { cabins, isPending } = useGetCabins();
+  const [searchParams] = useSearchParams();
+  const filterValue = searchParams.get("discount") || "all";
+  const sortValue = searchParams.get("sortby") || "name-asc";
   if (isPending) return <Spinner />;
+  let filteredCabins =
+    filterValue === "with-discount"
+      ? cabins.filter((cabin) => cabin.discount !== 0)
+      : filterValue === "no-discount"
+      ? cabins.filter((cabin) => cabin.discount === 0)
+      : cabins;
+
+  let sortedCabins =
+    sortValue === "name-asc"
+      ? filteredCabins.sort((a, b) => a.name.localeCompare(b.name))
+      : sortValue === "name-desc"
+      ? filteredCabins.sort((a, b) => b.name.localeCompare(a.name))
+      : sortValue === "price-asc"
+      ? filteredCabins.sort((a, b) => a.regularPrice - b.regularPrice)
+      : sortValue === "price-desc"
+      ? filteredCabins.sort((a, b) => b.regularPrice - a.regularPrice)
+      : sortValue === "capacity-asc"
+      ? filteredCabins.sort((a, b) => a.maxCapacity - b.maxCapacity)
+      : sortValue === "capacity-desc"
+      ? filteredCabins.sort((a, b) => b.maxCapacity - a.maxCapacity)
+      : filteredCabins;
+
   return (
-    <Table>
-      <TableHeader>
+    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table.TableHeader>
         <div></div>
         <div>CABIN</div>
         <div>CAPACITY</div>
         <div>PRICE</div>
         <div>DISCOUNT</div>
         <div></div>
-      </TableHeader>
-      <CabinRows>
-        {cabins.map((cabin) => (
-          <Row key={cabin.id}>
-            <CabinRow key={cabin.id} cabin={cabin} />
-          </Row>
-        ))}
-      </CabinRows>
+      </Table.TableHeader>
+      <Table.TableRows
+        data={sortedCabins}
+        render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
+      />
     </Table>
   );
 }

@@ -26,6 +26,11 @@ const Overlay = styled.div`
   transition: all 0.5s;
 `;
 
+const StyledOpen = styled.div`
+  display: inline-block;
+  width: fit-content;
+`;
+
 const CloseButton = styled.button`
   background: none;
   border: none;
@@ -69,10 +74,13 @@ function Modal({ children }) {
   );
 }
 
-const Open = ({ children, name }) => {
+const Open = ({ children, name, line = true }) => {
   const { handleOpenModal } = useContext(modalContext);
-
-  return <div onClick={() => handleOpenModal(name)}>{children}</div>;
+  if (line) return <div onClick={() => handleOpenModal(name)}>{children}</div>;
+  else
+    return (
+      <StyledOpen onClick={() => handleOpenModal(name)}>{children}</StyledOpen>
+    );
 };
 
 const Window = ({ children, name }) => {
