@@ -36,12 +36,9 @@ const Amount = styled.div`
 
 function BookingRow({
   booking: {
-    id: bookingId,
-    created_at,
     startDate,
     endDate,
     numNights,
-    numGuests,
     totalPrice,
     status,
     guests: { fullName: guestName, email },
@@ -55,7 +52,7 @@ function BookingRow({
   };
 
   return (
-    <Table.Row>
+    <Table.TableRow>
       <Cabin>{cabinName}</Cabin>
 
       <Stacked>
@@ -79,7 +76,7 @@ function BookingRow({
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
-    </Table.Row>
+    </Table.TableRow>
   );
 }
 

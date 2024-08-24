@@ -16,7 +16,7 @@ function Cabins() {
   return (
     <>
       <MainHeader>
-        <Heading as="h1">All cabins</Heading>
+        <Heading as="h1">All Cabins</Heading>
         <StyledContainer>
           <Filter
             filterField="discount"
