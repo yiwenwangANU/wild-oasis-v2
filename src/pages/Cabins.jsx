@@ -25,6 +25,7 @@ function Cabins() {
               { label: "With discount", value: "with-discount" },
               { label: "No discount", value: "no-discount" },
             ]}
+            defaultOption="all"
           />
           <SortBy
             filterField="sortby"

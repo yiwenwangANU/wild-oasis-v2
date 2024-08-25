@@ -6,7 +6,7 @@ import {
 } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-
+import Uploader from "../data/Uploader";
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -87,6 +87,7 @@ function MainNav() {
           </StyledNavLink>
         </ul>
       </NavList>
+      <Uploader />
     </nav>
   );
 }

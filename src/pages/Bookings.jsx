@@ -24,16 +24,15 @@ function Bookings() {
               { label: "Checked in", value: "checked-in" },
               { label: "unconfirmed", value: "unconfirmed" },
             ]}
+            defaultOption="all"
           />
           <SortBy
             filterField="sortby"
             options={[
-              { label: "name(A-Z)", value: "name-asc" },
-              { label: "name(Z-A)", value: "name-desc" },
-              { label: "price(low first)", value: "price-asc" },
-              { label: "price(high first)", value: "price-desc" },
-              { label: "capacity(low first)", value: "capacity-asc" },
-              { label: "capacity(high first)", value: "capacity-desc" },
+              { label: "date(recent first)", value: "startDate-asc" },
+              { label: "date(earlier first)", value: "startDate-desc" },
+              { label: "amount(low first)", value: "totalPrice-asc" },
+              { label: "amount(high first)", value: "totalPrice-desc" },
             ]}
           />
         </StyledContainer>
