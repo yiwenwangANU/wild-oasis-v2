@@ -5,12 +5,11 @@ const tableContext = createContext();
 
 const StyledTable = styled.div`
   font-size: 1.4rem;
+  border: 1px solid var(--color-grey-200);
   border-radius: 7px;
   overflow: hidden;
 `;
 const StyledTableHeader = styled.header`
-  border: 1px solid var(--color-grey-200);
-  border-radius: 7px;
   display: grid;
   grid-template-columns: ${(props) => props.$columns};
   column-gap: 2.4rem;
@@ -24,10 +23,7 @@ const StyledTableHeader = styled.header`
   color: var(--color-grey-600);
   padding: 1.6rem 2.4rem;
 `;
-const StyledCabinRows = styled.div`
-  border: 1px solid var(--color-grey-200);
-  border-radius: 7px;
-`;
+const StyledTableRows = styled.div``;
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -39,6 +35,13 @@ const StyledTableRow = styled.div`
   border-bottom: 1px solid var(--color-grey-100);
 `;
 
+const StyledTableFooter = styled.div`
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--color-grey-50);
+`;
 function Table({ children, columns }) {
   return (
     <tableContext.Provider value={{ columns }}>
@@ -53,7 +56,7 @@ const TableHeader = ({ children }) => {
 };
 
 const TableRows = ({ data, render }) => {
-  return <StyledCabinRows>{data.map(render)}</StyledCabinRows>;
+  return <StyledTableRows>{data.map(render)}</StyledTableRows>;
 };
 
 const TableRow = ({ children }) => {
@@ -61,8 +64,13 @@ const TableRow = ({ children }) => {
   return <StyledTableRow $columns={columns}>{children}</StyledTableRow>;
 };
 
+const TableFooter = ({ children }) => {
+  return <StyledTableFooter>{children}</StyledTableFooter>;
+};
+
 Table.TableHeader = TableHeader;
 Table.TableRows = TableRows;
 Table.TableRow = TableRow;
+Table.TableFooter = TableFooter;
 
 export default Table;

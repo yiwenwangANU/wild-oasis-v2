@@ -2,6 +2,7 @@ import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Spinner from "../../ui/Spinner";
 import useGetBookings from "./useGetBookings";
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
   const { bookings, isPending } = useGetBookings();
@@ -21,6 +22,9 @@ function BookingTable() {
         data={bookings}
         render={(booking) => <BookingRow key={booking.id} booking={booking} />}
       />
+      <Table.TableFooter>
+        <Pagination />
+      </Table.TableFooter>
     </Table>
   );
 }
