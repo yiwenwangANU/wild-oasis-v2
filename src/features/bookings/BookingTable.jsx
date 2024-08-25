@@ -23,7 +23,7 @@ function BookingTable() {
         render={(booking) => <BookingRow key={booking.id} booking={booking} />}
       />
       <Table.TableFooter>
-        <Pagination />
+        <Pagination count={45} />
       </Table.TableFooter>
     </Table>
   );
