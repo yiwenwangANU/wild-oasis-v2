@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { PiX } from "react-icons/pi";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -31,7 +32,7 @@ const StyledOpen = styled.div`
 
 const StyledList = styled.div`
   position: fixed;
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
@@ -85,9 +86,9 @@ function Open({ children, name }) {
       if (name === openName && listRef.current && openRef.current) {
         const openRect = openRef.current.getBoundingClientRect();
         listRef.current.style.top = `${
-          window.scrollY + openRect.top + 3 * openRect.height
+          window.scrollY + openRect.y + openRect.height
         }px`;
-        listRef.current.style.left = `${openRect.left + 3 * openRect.width}px`;
+        listRef.current.style.left = `${openRect.width + openRect.x}px`;
       }
     };
 

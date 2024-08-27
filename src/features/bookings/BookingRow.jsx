@@ -91,9 +91,6 @@ function BookingRow({
           <Menus.Item>
             <HiSquare2Stack /> Duplicate
           </Menus.Item>
-          <Menus.Item>
-            <HiSquare2Stack /> Duplicate
-          </Menus.Item>
         </Menus.List>
       </Menus>
     </Table.TableRow>
