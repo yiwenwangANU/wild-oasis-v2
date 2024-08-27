@@ -12,7 +12,7 @@ const Container = styled.div`
 const StyledOpen = styled.div`
   text-align: left;
   background: none;
-  border: none;
+  border-radius: var(--border-radius-lg);
   padding: 0.6rem 0.6rem;
   font-size: 1.4rem;
   transition: all 0.2s;
@@ -85,9 +85,9 @@ function Open({ children, name }) {
       if (name === openName && listRef.current && openRef.current) {
         const openRect = openRef.current.getBoundingClientRect();
         listRef.current.style.top = `${
-          window.scrollY + openRect.bottom + 60
+          window.scrollY + openRect.top + 3 * openRect.height
         }px`;
-        listRef.current.style.left = `${openRect.left + 70}px`;
+        listRef.current.style.left = `${openRect.left + 3 * openRect.width}px`;
       }
     };
 

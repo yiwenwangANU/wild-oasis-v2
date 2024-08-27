@@ -24,19 +24,18 @@ function useGetBookings() {
     from: page.from + RESULTS_PER_PAGE,
     to: page.to + RESULTS_PER_PAGE,
   };
-
+  const queryClient = useQueryClient();
   const { data, isPending } = useQuery({
     queryKey: ["getBookings", filter, sort, page],
     queryFn: () => getBookingsAPI(filter, sort, page),
   });
+  const bookings = data?.data;
+  const count = data?.count;
 
-  const queryClient = useQueryClient();
   queryClient.prefetchQuery({
     queryKey: ["getBookings", filter, sort, nextPage],
     queryFn: () => getBookingsAPI(filter, sort, nextPage),
   });
-  const bookings = data?.data;
-  const count = data?.count;
 
   return { bookings, count, isPending };
 }
