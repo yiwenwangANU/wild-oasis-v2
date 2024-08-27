@@ -6,7 +6,7 @@ function useGetBookings() {
   const [searchParams] = useSearchParams();
   const filterValue = searchParams.get("status");
   const sortValue = searchParams.get("sortby");
-  const pageValue = searchParams.get("page");
+  const pageValue = parseInt(searchParams.get("page"));
   const filter =
     filterValue && filterValue !== "all"
       ? { field: "status", value: filterValue, operation: "eq" }
@@ -16,15 +16,18 @@ function useGetBookings() {
     : null;
   const page = pageValue
     ? {
-        from: 1 + (pageValue - 1) * RESULTS_PER_PAGE,
-        to: 1 + pageValue * RESULTS_PER_PAGE,
+        from: (pageValue - 1) * RESULTS_PER_PAGE,
+        to: pageValue * RESULTS_PER_PAGE - 1,
       }
-    : { from: 1, to: RESULTS_PER_PAGE };
-  const { data: bookings, isPending } = useQuery({
+    : { from: 0, to: RESULTS_PER_PAGE - 1 };
+  const { data, isPending } = useQuery({
     queryKey: ["getBookings", filter, sort, page],
     queryFn: () => getBookingsAPI(filter, sort, page),
   });
-  return { bookings, isPending };
+  const bookings = data?.data;
+  const count = data?.count;
+
+  return { bookings, count, isPending };
 }
 
 export default useGetBookings;
