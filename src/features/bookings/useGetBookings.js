@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings as getBookingsAPI } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { RESULTS_PER_PAGE } from "../../utils/constant";
@@ -20,9 +20,20 @@ function useGetBookings() {
         to: pageValue * RESULTS_PER_PAGE - 1,
       }
     : { from: 0, to: RESULTS_PER_PAGE - 1 };
+  const nextPage = {
+    from: page.from + RESULTS_PER_PAGE,
+    to: page.to + RESULTS_PER_PAGE,
+  };
+
   const { data, isPending } = useQuery({
     queryKey: ["getBookings", filter, sort, page],
     queryFn: () => getBookingsAPI(filter, sort, page),
+  });
+
+  const queryClient = useQueryClient();
+  queryClient.prefetchQuery({
+    queryKey: ["getBookings", filter, sort, nextPage],
+    queryFn: () => getBookingsAPI(filter, sort, nextPage),
   });
   const bookings = data?.data;
   const count = data?.count;
