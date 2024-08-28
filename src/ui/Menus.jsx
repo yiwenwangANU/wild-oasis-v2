@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { PiX } from "react-icons/pi";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -127,8 +126,8 @@ function List({ children, name }) {
   return <StyledList ref={listRef}>{children}</StyledList>;
 }
 
-function Item({ children }) {
-  return <StyledItem>{children}</StyledItem>;
+function Item({ children, onClick }) {
+  return <StyledItem onClick={onClick}>{children}</StyledItem>;
 }
 
 Menus.Open = Open;

@@ -80,11 +80,9 @@ function CabinRow({ cabin }) {
             <HiDotsVertical />
           </Menus.Open>
           <Menus.List name={cabinId}>
-            <div onClick={() => duplicateCabin(cabin)}>
-              <Menus.Item>
-                <HiSquare2Stack /> Duplicate
-              </Menus.Item>
-            </div>
+            <Menus.Item onClick={() => duplicateCabin(cabin)}>
+              <HiSquare2Stack /> Duplicate
+            </Menus.Item>
 
             <Modal.Open name="editCabin">
               <Menus.Item>

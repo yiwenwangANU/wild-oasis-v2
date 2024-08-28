@@ -7,8 +7,8 @@ import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import Menus from "../../ui/Menus";
-import { HiDotsVertical } from "react-icons/hi";
-import { HiSquare2Stack } from "react-icons/hi2";
+import { HiDotsVertical, HiEye } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -54,7 +54,10 @@ function BookingRow({
     "checked-in": "green",
     "checked-out": "silver",
   };
-
+  const navigate = useNavigate();
+  const handleSeeDetails = () => {
+    navigate(`/bookings/${bookingId}`);
+  };
   return (
     <Table.TableRow>
       <Cabin>{cabinName}</Cabin>
@@ -85,11 +88,8 @@ function BookingRow({
           <HiDotsVertical />
         </Menus.Open>
         <Menus.List name={bookingId}>
-          <Menus.Item>
-            <HiSquare2Stack /> Duplicate
-          </Menus.Item>
-          <Menus.Item>
-            <HiSquare2Stack /> Duplicate
+          <Menus.Item onClick={handleSeeDetails}>
+            <HiEye /> See Details
           </Menus.Item>
         </Menus.List>
       </Menus>

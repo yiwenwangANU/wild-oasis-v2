@@ -19,6 +19,7 @@ import AppLayout from "./ui/AppLayout";
 // Import global styles
 import GlobalStyles from "./styles/GlobalStyles";
 import { Toaster } from "react-hot-toast";
+import Booking from "./pages/Booking";
 
 // Create a react query client
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ function App() {
           path: "bookings",
           element: <Bookings />,
         },
+        { path: "bookings/:bookingId", element: <Booking /> },
         {
           path: "cabins",
           element: <Cabins />,
