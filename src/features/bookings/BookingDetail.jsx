@@ -9,7 +9,7 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetBooking from "./useGetBooking";
 import Spinner from "../../ui/Spinner";
 
@@ -22,7 +22,7 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
   const { bookingId } = useParams();
   const { booking, isPending } = useGetBooking(bookingId);
-
+  const navigate = useNavigate();
   const status = "checked-in";
 
   const moveBack = useMoveBack();
@@ -33,6 +33,9 @@ function BookingDetail() {
     "checked-out": "silver",
   };
 
+  const handleCheckIn = () => {
+    navigate(`/checkin/${bookingId}`);
+  };
   if (isPending) return <Spinner />;
   return (
     <>
@@ -47,6 +50,7 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        <Button onClick={handleCheckIn}>Check in</Button>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

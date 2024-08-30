@@ -9,6 +9,7 @@ import { formatDistanceFromNow } from "../../utils/helpers";
 import Menus from "../../ui/Menus";
 import { HiDotsVertical, HiEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { IoArchiveSharp } from "react-icons/io5";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -58,6 +59,9 @@ function BookingRow({
   const handleSeeDetails = () => {
     navigate(`/bookings/${bookingId}`);
   };
+  const handleCheckIn = () => {
+    navigate(`/checkin/${bookingId}`);
+  };
   return (
     <Table.TableRow>
       <Cabin>{cabinName}</Cabin>
@@ -90,6 +94,9 @@ function BookingRow({
         <Menus.List name={bookingId}>
           <Menus.Item onClick={handleSeeDetails}>
             <HiEye /> See Details
+          </Menus.Item>
+          <Menus.Item onClick={handleCheckIn}>
+            <IoArchiveSharp /> Check in
           </Menus.Item>
         </Menus.List>
       </Menus>
