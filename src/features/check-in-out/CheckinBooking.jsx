@@ -14,6 +14,7 @@ import useGetBooking from "../bookings/useGetBooking";
 import { formatCurrency } from "../../utils/helpers";
 import useCheckIn from "./useCheckIn";
 import { useState } from "react";
+import useGetSettings from "../settings/useGetSettings";
 const Box = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
@@ -25,18 +26,32 @@ const Box = styled.div`
 function CheckinBooking() {
   const moveBack = useMoveBack();
   const [confirmPaid, setConfirmPaid] = useState(false);
+  const [addBreakfast, setAddBreakfast] = useState(false);
   const { bookingId } = useParams();
   const { booking, isPending: isGettingBooking } = useGetBooking(bookingId);
   const { checkIn, isPending: isCheckingIn } = useCheckIn(bookingId);
-
+  const { settings, isPending: isGettingSetting } = useGetSettings();
   function handleConfirmPayment() {
     setConfirmPaid(!confirmPaid);
+  }
+  function handleAddBreakfast() {
+    setAddBreakfast(!addBreakfast);
   }
   function handleCheckin() {
     checkIn();
   }
-  if (isGettingBooking) return <Spinner />;
-  const { guests, totalPrice, status, isPaid, hasBreakfast } = booking;
+  if (isGettingBooking || isGettingSetting) return <Spinner />;
+  const {
+    guests,
+    cabinPrice,
+    totalPrice,
+    status,
+    isPaid,
+    hasBreakfast,
+    numNights,
+    numGuests,
+  } = booking;
+  const totalBreakfastPrice = numNights * numGuests * settings.breakfastPrice;
   return (
     <>
       <Row type="horizontal">
@@ -45,10 +60,24 @@ function CheckinBooking() {
       </Row>
 
       <BookingDataBox booking={booking} />
+      {!hasBreakfast && (
+        <Box>
+          <Checkbox onChange={handleAddBreakfast}>
+            Want to add breakfast for {formatCurrency(totalBreakfastPrice)} ?
+          </Checkbox>
+        </Box>
+      )}
+
       <Box>
         <Checkbox onChange={handleConfirmPayment}>
           I confirm that {guests.fullName} has paid the total amount of{" "}
-          {formatCurrency(totalPrice)}
+          {hasBreakfast || addBreakfast
+            ? `${formatCurrency(
+                cabinPrice + totalBreakfastPrice
+              )}(${formatCurrency(cabinPrice)} + ${formatCurrency(
+                totalBreakfastPrice
+              )})`
+            : formatCurrency(cabinPrice)}
         </Checkbox>
       </Box>
       <ButtonGroup>
