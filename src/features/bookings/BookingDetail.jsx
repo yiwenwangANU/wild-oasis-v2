@@ -23,7 +23,7 @@ function BookingDetail() {
   const { bookingId } = useParams();
   const { booking, isPending } = useGetBooking(bookingId);
   const navigate = useNavigate();
-  const status = "checked-in";
+  const { status } = booking;
 
   const moveBack = useMoveBack();
 
@@ -50,7 +50,11 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
-        <Button onClick={handleCheckIn}>Check in</Button>
+        {status === "unconfirmed" ? (
+          <Button onClick={handleCheckIn}>Check in</Button>
+        ) : status === "checked-in" ? (
+          <Button>Check out</Button>
+        ) : null}
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

@@ -7,7 +7,11 @@ function useCheckIn(id) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { mutate: checkIn, isPending } = useMutation({
-    mutationFn: () => updateBooking(id, { status: "checked-in", isPaid: true }),
+    mutationFn: () =>
+      updateBooking(id, {
+        status: "checked-in",
+        isPaid: true,
+      }),
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["getBooking"] });

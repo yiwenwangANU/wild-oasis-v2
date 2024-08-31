@@ -10,6 +10,7 @@ import Menus from "../../ui/Menus";
 import { HiDotsVertical, HiEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { IoArchiveSharp } from "react-icons/io5";
+import { HiTrash } from "react-icons/hi2";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -95,8 +96,17 @@ function BookingRow({
           <Menus.Item onClick={handleSeeDetails}>
             <HiEye /> See Details
           </Menus.Item>
-          <Menus.Item onClick={handleCheckIn}>
-            <IoArchiveSharp /> Check in
+          {status === "unconfirmed" ? (
+            <Menus.Item onClick={handleCheckIn}>
+              <IoArchiveSharp /> Check In
+            </Menus.Item>
+          ) : status === "checked-in" ? (
+            <Menus.Item>
+              <IoArchiveSharp /> Check Out
+            </Menus.Item>
+          ) : null}
+          <Menus.Item>
+            <HiTrash /> Delete Booking
           </Menus.Item>
         </Menus.List>
       </Menus>
