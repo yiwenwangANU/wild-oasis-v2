@@ -9,7 +9,7 @@ function useCheckOut(id) {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["getBooking", "getBookings"],
+        active: true,
       });
       toast.success("Checkout successfully.");
     },
