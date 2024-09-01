@@ -10,6 +10,7 @@ const Container = styled.div`
 `;
 
 const StyledOpen = styled.div`
+  cursor: pointer;
   text-align: left;
   background: none;
   border-radius: var(--border-radius-lg);
@@ -47,6 +48,7 @@ const StyledItem = styled.div`
   margin: 0;
   box-sizing: border-box;
   display: flex;
+  cursor: pointer;
   flex-direction: row;
   align-items: center;
   gap: 1.6rem;
@@ -127,7 +129,12 @@ function List({ children, name }) {
 }
 
 function Item({ children, onClick }) {
-  return <StyledItem onClick={onClick}>{children}</StyledItem>;
+  const { handleCloseMenus } = useContext(menuContext);
+  const handleClick = () => {
+    onClick();
+    handleCloseMenus();
+  };
+  return <StyledItem onClick={handleClick}>{children}</StyledItem>;
 }
 
 Menus.Open = Open;

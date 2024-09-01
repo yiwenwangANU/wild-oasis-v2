@@ -11,6 +11,7 @@ import { HiDotsVertical, HiEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { IoArchiveSharp } from "react-icons/io5";
 import { HiTrash } from "react-icons/hi2";
+import useCheckOut from "../check-in-out/useCheckOut";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -56,12 +57,17 @@ function BookingRow({
     "checked-in": "green",
     "checked-out": "silver",
   };
+  const { checkout, isPending } = useCheckOut(bookingId);
   const navigate = useNavigate();
   const handleSeeDetails = () => {
     navigate(`/bookings/${bookingId}`);
   };
   const handleCheckIn = () => {
     navigate(`/checkin/${bookingId}`);
+  };
+
+  const handleCheckOut = () => {
+    checkout();
   };
   return (
     <Table.TableRow>
@@ -101,7 +107,7 @@ function BookingRow({
               <IoArchiveSharp /> Check In
             </Menus.Item>
           ) : status === "checked-in" ? (
-            <Menus.Item>
+            <Menus.Item onClick={handleCheckOut}>
               <IoArchiveSharp /> Check Out
             </Menus.Item>
           ) : null}
