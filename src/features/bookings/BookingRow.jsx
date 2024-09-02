@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { IoArchiveSharp } from "react-icons/io5";
 import { HiTrash } from "react-icons/hi2";
 import useCheckOut from "../check-in-out/useCheckOut";
+import useDeleteBooking from "./useDeleteBooking";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -57,7 +60,8 @@ function BookingRow({
     "checked-in": "green",
     "checked-out": "silver",
   };
-  const { checkout, isPending } = useCheckOut(bookingId);
+  const { checkout } = useCheckOut(bookingId);
+  const { deleteBooking, isPending } = useDeleteBooking(bookingId);
   const navigate = useNavigate();
   const handleSeeDetails = () => {
     navigate(`/bookings/${bookingId}`);
@@ -68,6 +72,10 @@ function BookingRow({
 
   const handleCheckOut = () => {
     checkout();
+  };
+
+  const handleDeleteBooking = () => {
+    deleteBooking();
   };
   return (
     <Table.TableRow>
@@ -111,9 +119,20 @@ function BookingRow({
               <IoArchiveSharp /> Check Out
             </Menus.Item>
           ) : null}
-          <Menus.Item>
-            <HiTrash /> Delete Booking
-          </Menus.Item>
+          <Modal>
+            <Modal.Open name="deleteBooking">
+              <Menus.Item>
+                <HiTrash /> Delete Booking
+              </Menus.Item>
+            </Modal.Open>
+            <Modal.Window name="deleteBooking">
+              <ConfirmDelete
+                resourceName={`Booking #${bookingId}`}
+                onConfirm={() => deleteBooking()}
+                disabled={isPending}
+              />
+            </Modal.Window>
+          </Modal>
         </Menus.List>
       </Menus>
     </Table.TableRow>
