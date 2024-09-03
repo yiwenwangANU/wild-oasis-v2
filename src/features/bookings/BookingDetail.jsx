@@ -13,6 +13,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import useGetBooking from "./useGetBooking";
 import Spinner from "../../ui/Spinner";
 import useCheckOut from "../check-in-out/useCheckOut";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Modal from "../../ui/Modal";
+import useDeleteBooking from "./useDeleteBooking";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -24,6 +27,7 @@ function BookingDetail() {
   const { bookingId } = useParams();
   const { booking, isPending } = useGetBooking(bookingId);
   const { checkout, isPending: isCheckingOut } = useCheckOut(bookingId);
+  const { deleteBooking, isPending: isDeleting } = useDeleteBooking(bookingId);
   const navigate = useNavigate();
 
   const moveBack = useMoveBack();
@@ -42,6 +46,13 @@ function BookingDetail() {
     checkout();
     navigate("/bookings");
   };
+
+  const handleDeleteBooking = () =>
+    deleteBooking(null, {
+      onSettled: () => {
+        navigate(-1);
+      },
+    });
   if (isPending) return <Spinner />;
   const { status } = booking;
   return (
@@ -59,12 +70,29 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        <Modal>
+          <Modal.Open name="deleteBooking">
+            <Button variation="danger">Delete booking</Button>
+          </Modal.Open>
+          <Modal.Window name="deleteBooking">
+            <ConfirmDelete
+              resourceName={`Booking #${bookingId}`}
+              onConfirm={handleDeleteBooking}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
+
         {status === "unconfirmed" ? (
-          <Button onClick={handleCheckIn}>Check in</Button>
+          <Button onClick={handleCheckIn} disabled={isDeleting}>
+            Check in
+          </Button>
         ) : status === "checked-in" ? (
-          <Button onClick={handleCheckOut}>Check out</Button>
+          <Button onClick={handleCheckOut} disabled={isDeleting}>
+            Check out
+          </Button>
         ) : null}
-        <Button variation="secondary" onClick={moveBack}>
+        <Button variation="secondary" onClick={moveBack} disabled={isDeleting}>
           Back
         </Button>
       </ButtonGroup>

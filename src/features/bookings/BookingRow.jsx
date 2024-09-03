@@ -128,7 +128,7 @@ function BookingRow({
             <Modal.Window name="deleteBooking">
               <ConfirmDelete
                 resourceName={`Booking #${bookingId}`}
-                onConfirm={() => deleteBooking()}
+                onConfirm={handleDeleteBooking}
                 disabled={isPending}
               />
             </Modal.Window>
