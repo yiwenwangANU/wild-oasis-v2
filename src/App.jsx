@@ -21,6 +21,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 import { Toaster } from "react-hot-toast";
 import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 // Create a react query client
 const queryClient = new QueryClient();
@@ -30,7 +31,11 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <AppLayout />,
+      element: (
+        <ProtectedRoute>
+          <AppLayout />
+        </ProtectedRoute>
+      ),
       children: [
         {
           path: "/",
