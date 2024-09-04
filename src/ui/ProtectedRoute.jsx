@@ -16,7 +16,6 @@ function ProtectedRoute({ children }) {
   const { isAuthenticated, isPending, fetchStatus } = useUser();
   const navigate = useNavigate();
   useEffect(() => {
-    // Ensure the navigation happens only after the component has mounted
     if (!isPending && !isAuthenticated && fetchStatus !== "fetching") {
       navigate("/login");
     }

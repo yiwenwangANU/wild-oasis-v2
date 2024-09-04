@@ -10,7 +10,7 @@ function useLogin() {
     onSuccess: (data) => {
       toast.success("Login Successfully.");
       console.log(data);
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     },
     onError: () => {
       toast.error("Incorrect username or password.");
