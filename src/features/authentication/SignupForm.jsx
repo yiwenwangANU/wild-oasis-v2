@@ -4,7 +4,7 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import styled from "styled-components";
-
+import useSignup from "../authentication/useSignup";
 // Email regex: /\S+@\S+\.\S+/
 const Error = styled.span`
   color: red;
@@ -16,7 +16,10 @@ function SignupForm() {
     getValues,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { signup, isPending } = useSignup();
+  const onSubmit = ({ username, email, password }) => {
+    signup({ email, password, username });
+  };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Full name" error={""}>
@@ -67,7 +70,7 @@ function SignupForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>Create new user</Button>
+        <Button disabled={isPending}>Create new user</Button>
       </FormRow>
     </Form>
   );
