@@ -78,3 +78,11 @@ export async function updateUserData({ username, avatar }) {
   }
   return data;
 }
+
+export async function updateUserPassword({ password }) {
+  const { data, error } = await supabase.auth.updateUser({ password });
+  if (error) {
+    throw Error(error.message);
+  }
+  return data;
+}

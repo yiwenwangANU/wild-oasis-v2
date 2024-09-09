@@ -12,17 +12,17 @@ import useUpdateUserData from "./useUpdateUserData";
 function UpdateUserDataForm() {
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
   const { user } = useUser();
-
+  const formRef = useRef();
   const [fullName, setFullName] = useState(user?.username);
   const [avatar, setAvatar] = useState(null);
+  const { updateUser, isPending: isUpdatingData } = useUpdateUserData();
 
-  const formRef = useRef();
   const handleReset = () => {
     setFullName("");
     setAvatar(null);
     formRef.current.reset();
   };
-  const { updateUser, isPending: isUpdatingData } = useUpdateUserData();
+
   function handleSubmit(e) {
     e.preventDefault();
     updateUser(
@@ -59,7 +59,10 @@ function UpdateUserDataForm() {
           type="reset"
           variation="secondary"
           disabled={isUpdatingData}
-          onClick={handleReset}
+          onClick={() => {
+            handleReset();
+            setFullName(user?.username);
+          }}
         >
           Cancel
         </Button>
