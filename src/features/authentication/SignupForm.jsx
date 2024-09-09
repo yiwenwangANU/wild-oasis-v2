@@ -14,11 +14,12 @@ function SignupForm() {
     register,
     handleSubmit,
     getValues,
+    reset,
     formState: { errors },
   } = useForm();
   const { signup, isPending } = useSignup();
   const onSubmit = ({ username, email, password }) => {
-    signup({ email, password, username });
+    signup({ email, password, username }, { onSettled: () => reset() });
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -26,6 +27,7 @@ function SignupForm() {
         <Input
           type="text"
           id="fullName"
+          disabled={isPending}
           {...register("username", { required: true })}
         />
         {errors.username && <Error>This field is required</Error>}
@@ -35,6 +37,7 @@ function SignupForm() {
         <Input
           type="email"
           id="email"
+          disabled={isPending}
           {...register("email", { required: true, pattern: /\S+@\S+\.\S+/ })}
         />
         {errors.email && <Error>Please enter a valid email address</Error>}
@@ -44,6 +47,7 @@ function SignupForm() {
         <Input
           type="password"
           id="password"
+          disabled={isPending}
           {...register("password", { required: true, minLength: 8 })}
         />
         {errors.password && (
@@ -55,6 +59,7 @@ function SignupForm() {
         <Input
           type="password"
           id="passwordConfirm"
+          disabled={isPending}
           {...register("passwordConfirm", {
             required: true,
             validate: (value) => value === getValues("password"),
@@ -67,7 +72,7 @@ function SignupForm() {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" onClick={reset}>
           Cancel
         </Button>
         <Button disabled={isPending}>Create new user</Button>

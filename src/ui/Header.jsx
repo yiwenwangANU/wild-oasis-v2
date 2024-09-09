@@ -1,14 +1,21 @@
 import styled from "styled-components";
-import Logout from "../features/authentication/Logout";
+import HeaderMenu from "./HeaderMenu";
+import UserAvatar from "../features/authentication/UserAvatar";
 
 const StyledHeader = styled.header`
   padding: 1.2rem 4.8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.2rem;
 `;
 
 function Header() {
   return (
     <StyledHeader>
-      <Logout />
+      <UserAvatar />
+      <HeaderMenu />
     </StyledHeader>
   );
 }

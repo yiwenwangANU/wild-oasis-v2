@@ -9,7 +9,7 @@ function useLogout() {
     mutationFn: logoutAPI,
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["getUser"] });
+      queryClient.removeQueries();
       toast.success("Logout successfully.");
     },
     onError: () => toast.error("Failed to logout."),
