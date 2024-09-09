@@ -24,7 +24,7 @@ function UserAvatar() {
   const { user } = useUser();
   return (
     <StyledUserAvatar>
-      <Avatar src={user?.avatar || "/img/default-user.jpg"} />
+      <Avatar src={user?.avatarUrl || "/img/default-user.jpg"} />
       <div>{user?.username}</div>
     </StyledUserAvatar>
   );

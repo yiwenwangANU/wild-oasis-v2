@@ -1,4 +1,6 @@
 import supabase from "../supabase";
+const BUCKET_URL =
+  "https://kyjkvmtqkfvbenttjrma.supabase.co/storage/v1/object/public/avatars/";
 
 export async function signup({ email, password, username }) {
   const { data, error } = await supabase.auth.signUp({
@@ -47,4 +49,32 @@ export async function logout() {
   if (error) {
     throw Error(error.message);
   }
+}
+
+export async function updateUserData({ username, avatar }) {
+  let updateData;
+  if (avatar) {
+    const avatarName = `${Math.random()}_${avatar.name}`;
+    const avatarUrl = `${BUCKET_URL}${avatarName}`;
+
+    const { error: storageError } = await supabase.storage
+      .from("avatars")
+      .upload(avatarName, avatar, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+    if (storageError) {
+      console.error(storageError);
+      throw new Error("Avatars could not be uploaded!");
+    }
+    updateData = { username, avatarUrl };
+  } else updateData = { username };
+
+  const { data, error: userDataError } = await supabase.auth.updateUser({
+    data: updateData,
+  });
+  if (userDataError) {
+    throw Error(userDataError.message);
+  }
+  return data;
 }
