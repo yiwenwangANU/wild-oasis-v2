@@ -8,12 +8,12 @@ function useGetRecentBookings() {
   const days = Number(searchParams.get("last")) || 7;
   const date = subDays(new Date(), days).toISOString();
   // Queries
-  const { data, isPending } = useQuery({
+  const { data: recentBookings, isPending } = useQuery({
     queryKey: ["getRecentBookings", days],
     queryFn: () => getBookingsAfterDate(date),
   });
 
-  return { data, isPending };
+  return { recentBookings, isPending };
 }
 
 export default useGetRecentBookings;
