@@ -15,7 +15,7 @@ function useGetRecentStays() {
   const recentStays = data?.filter(
     (ele) => ele.status === "checked-in" || ele.status === "checked-out"
   );
-  return { recentStays, isPending };
+  return { recentStays, days, isPending };
 }
 
 export default useGetRecentStays;
