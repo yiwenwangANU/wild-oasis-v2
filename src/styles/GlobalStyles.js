@@ -38,12 +38,12 @@ const GlobalStyles = createGlobalStyle`
   --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
   
 
-    --image-grayscale: 0;
+  --image-grayscale: 0;
   --image-opacity: 100%;
   }
   
   &.dark-mode {
-    --color-grey-0: #18212f;
+--color-grey-0: #18212f;
 --color-grey-50: #111827;
 --color-grey-100: #1f2937;
 --color-grey-200: #374151;

@@ -22,6 +22,7 @@ import { Toaster } from "react-hot-toast";
 import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import { DarkModeProvider } from "./context/darkModeContext";
 
 // Create a react query client
 const queryClient = new QueryClient();
@@ -79,12 +80,14 @@ function App() {
     },
   ]);
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <GlobalStyles />
-      <Toaster />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <DarkModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <GlobalStyles />
+        <Toaster />
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </DarkModeProvider>
   );
 }
 
