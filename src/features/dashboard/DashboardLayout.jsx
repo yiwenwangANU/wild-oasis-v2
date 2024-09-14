@@ -4,6 +4,7 @@ import Spinner from "../../ui/Spinner";
 import useGetRecentStays from "./useGetRecentStays";
 import useGetCabins from "../../features/cabins/useGetCabins";
 import Stats from "./Stats";
+import SalesChart from "./SalesChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -29,8 +30,8 @@ function DashboardLayout() {
         cabinCount={cabins.length}
       />
       <div>Place Holder 2</div>
-      <div>Place Holder 3</div>
       <div>Place Holder 4</div>
+      <SalesChart days={days} recentBookings={recentBookings} />
     </StyledDashboardLayout>
   );
 }

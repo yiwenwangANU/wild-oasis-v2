@@ -4,7 +4,6 @@ import { HiOutlineBanknotes, HiOutlineCalendarDays } from "react-icons/hi2";
 import { formatCurrency } from "../../utils/helpers.js";
 function Stats({ bookings, stays, numDays, cabinCount }) {
   const numBookings = bookings.length;
-  console.log(bookings);
   const sales = bookings.reduce((acc, curr) => acc + curr.totalPrice, 0);
   const checkins = stays.length;
   const occupation = stays.reduce((acc, curr) => acc + curr.numNights, 0);

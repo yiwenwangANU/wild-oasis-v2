@@ -7,6 +7,7 @@ function useGetRecentStays() {
   const [searchParams] = useSearchParams();
   const days = Number(searchParams.get("last")) || 7;
   const date = subDays(new Date(), days).toISOString();
+
   // Queries
   const { data, isPending } = useQuery({
     queryKey: ["getRecentStays", days],
