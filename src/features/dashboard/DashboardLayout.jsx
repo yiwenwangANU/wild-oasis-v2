@@ -5,6 +5,7 @@ import useGetRecentStays from "./useGetRecentStays";
 import useGetCabins from "../../features/cabins/useGetCabins";
 import Stats from "./Stats";
 import SalesChart from "./SalesChart";
+import DurationChart from "./DurationChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -30,7 +31,7 @@ function DashboardLayout() {
         cabinCount={cabins.length}
       />
       <div>Place Holder 2</div>
-      <div>Place Holder 4</div>
+      <DurationChart recentStays={recentStays} />
       <SalesChart days={days} recentBookings={recentBookings} />
     </StyledDashboardLayout>
   );
