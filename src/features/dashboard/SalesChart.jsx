@@ -71,7 +71,7 @@ function SalesChart({ days, recentBookings }) {
       <ResponsiveContainer width="100%" height={250}>
         <AreaChart
           data={getSaleData(days, recentBookings)}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 30, left: 10, bottom: 0 }}
         >
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -84,7 +84,10 @@ function SalesChart({ days, recentBookings }) {
             </linearGradient>
           </defs>
           <XAxis dataKey="label" tick={{ fill: colors.text }} />
-          <YAxis unit="$" tick={{ fill: colors.text }} />
+          <YAxis
+            tickFormatter={(value) => `$${value.toLocaleString()}`}
+            tick={{ fill: colors.text }}
+          />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Area
