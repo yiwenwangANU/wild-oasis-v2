@@ -50,8 +50,8 @@ const getSaleData = (days, recentBookings) => {
 };
 function SalesChart({ days, recentBookings }) {
   const { theme: isDarkMode } = useDarkMode();
-  getSaleData(days, recentBookings);
-  // console.log(recentBookings);
+  const data = getSaleData(days, recentBookings);
+  console.log(data);
   const colors = isDarkMode
     ? {
         totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
@@ -67,10 +67,13 @@ function SalesChart({ days, recentBookings }) {
       };
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales</Heading>
+      <Heading as="h2">
+        Sales from {format(new Date(), "MMM dd, yyyy")} —{" "}
+        {format(subDays(new Date(), days - 1), "MMM dd, yyyy")}
+      </Heading>
       <ResponsiveContainer width="100%" height={250}>
         <AreaChart
-          data={getSaleData(days, recentBookings)}
+          data={data}
           margin={{ top: 10, right: 30, left: 10, bottom: 0 }}
         >
           <defs>
