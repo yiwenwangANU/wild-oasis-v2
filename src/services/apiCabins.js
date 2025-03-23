@@ -1,6 +1,5 @@
 import supabase from "../supabase";
-const BUCKET_URL =
-  "https://kyjkvmtqkfvbenttjrma.supabase.co/storage/v1/object/public/cabin-images/";
+const BUCKET_URL = import.meta.env.VITE_BUCKET_URL;
 
 export async function getCabins() {
   let { data: cabins, error } = await supabase.from("cabins").select("*");
